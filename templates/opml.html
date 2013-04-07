@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>feed2ical opml</title>
+</head>
+<body>
+opml {{opml_title}}
+<table border="1">
+{% for channel in channels %}
+<tr>
+<td>
+<a href="{{channel.htmlurl}}">{{channel.text}}</a>
+</td>
+<td>
+<input type="button" value="Convert to iCal" onclick="window.location = 'http://{{host}}/convert?url={{channel.xmlurl}}'">
+<input type="button" value="Subscribe to iCal" onclick="window.location = 'webcal://{{host}}/convert?url={{channel.xmlurl}}'">
+</td>
+</tr>
+{% endfor %}
+</table>
+</body>
+</html>

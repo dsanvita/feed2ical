@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>feed2ical</title>
+</head>
+<body>
+<h2>Feed2iCal</h2>
+<ul>
+    <li>View and/or Subscribe to RSS/RDF/Atom Feeds in iCalendar (vCal 2.0) format.</li>
+    <li>Subscriptions have been tested with Apple's iCal application and Microsoft Outlook.</li>
+    <li>Once you have subscribed to a feed, 
+        iTunes or iCloud can be used to synchronize it 
+        with your iPhone, iPad, or iPod.
+    </li>
+</ul>
+<hr>
+<form name="frmMain" action="/convert" method="get">
+RSS/RDF/Atom URL: 
+<input type="text" size="50" name="url" value="http://scripting.com/rss.xml">
+<input type="button" value="Convert to iCal" onclick="frmMain.action = 'http://{{host}}/convert'; frmMain.submit();">
+<input type="button" value="Subscribe in iCal" onclick="frmMain.action = 'webcal://{{host}}/convert'; frmMain.submit();">
+</form>
+<form name="frmOpml" action="/opml" enctype="multipart/form-data" method="post">
+OPML File: 
+<input type="file" name="opmlfile"/>
+<input type="submit" value="Upload Opml">
+</form>
+<p>
+<a href="http://dsanvita.github.io">Dean Sanvitale</a>, 2010
+<img src="/static/feed2ical.png" width="100%">
+</body>
+</html>

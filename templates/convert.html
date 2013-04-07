@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+PRODID:feed2ical 0.0.1
+X-WR-CALNAME;VALUE=TEXT:{{d.feed.title_text}}
+X-WR-CALDESC;VALUE=TEXT:{{d.feed.description_text}}
+VERSION:2.0
+{% for entry in d.entries %}
+BEGIN:VEVENT
+UID:{{entry.link}}
+DTSTAMP:{{entry.start_ical}}{% if d.feed.author_detail.email %}
+ORGANIZER:MAILTO:{{d.feed.author_detail.email}}{% endif %}
+URL;VALUE=URI:{{entry.link}}
+SUMMARY:{{entry.title_text}}
+DESCRIPTION:{{entry.description_text}}
+DTSTART:{{entry.start_ical}}
+DTEND:{{entry.end_ical}}
+END:VEVENT
+{% endfor %}
+END:VCALENDAR
