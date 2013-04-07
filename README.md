@@ -1,4 +1,5 @@
 feed2ical
 =========
 
-Convert RSS/ATOM feeds to iCalendar format
+[Convert](http://feed2ical.appspot.com) RSS/ATOM feeds to iCalendar format.
+
