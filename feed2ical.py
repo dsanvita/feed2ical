@@ -6,7 +6,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#	  http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-import datetime
+from datetime import datetime, timedelta
 import os
 import feedparser
 import html2text
@@ -39,6 +39,7 @@ class Convert(webapp.RequestHandler):
 	def get(self):
 		url = self.request.get('url')
 		try:
+			logging.info(url)
 			result = fetch(url, headers = {'Cache-Control' : 'max-age=300'})
 			if result.status_code == 200:
 				sContent = result.content
@@ -53,7 +54,10 @@ class Convert(webapp.RequestHandler):
 				allday = True
 				for entry in d.entries:
 					try:
-						datPubDate = datetime.datetime(*(entry.updated_parsed[0:6]))
+						datPubDate = datetime(*(entry.updated_parsed[0:6]))
+					except:
+						datPubDate = datetime.utcnow()
+					try:
 						if (datPubDate.hour + datPubDate.minute + datPubDate.second) > 0:
 							allday = False
 							break
@@ -70,18 +74,21 @@ class Convert(webapp.RequestHandler):
 					except:
 						pass
 					try:
-						datPubDate = datetime.datetime(*(entry.updated_parsed[0:6]))
 						try:
-							datStartDate = datetime.datetime(*(entry.created_parsed[0:6]))
+							datPubDate = datetime(*(entry.updated_parsed[0:6]))
+						except:
+							datPubDate = datetime.utcnow()
+						try:
+							datStartDate = datetime(*(entry.created_parsed[0:6]))
 						except:
 							datStartDate = datPubDate
 						try:
-							datEndDate = datetime.datetime(*(entry.expired_parsed[0:6]))
+							datEndDate = datetime(*(entry.expired_parsed[0:6]))
 						except:
 							if allday:
-								datEndDate = (datPubDate + datetime.timedelta(days=1))
+								datEndDate = (datPubDate + timedelta(days=1))
 							else:
-								datEndDate = (datPubDate + datetime.timedelta(hours=1))						
+								datEndDate = (datPubDate + timedelta(hours=1))						
 
 						if allday:
 							stfmt = "%Y%m%d"
@@ -96,7 +103,7 @@ class Convert(webapp.RequestHandler):
 				self.response.headers['Content-Type'] = "text/plain"
 				self.response.out.write(template.render(path, template_values))
 			else:
-				self.response.out.write("Error processing feed.")
+				self.response.out.write("Error " + str(result.status_code) + " when retrieving feed.")
 		except:
 			self.response.out.write("Error downloading feed.")
 			logging.info("Error downloading feed url")
