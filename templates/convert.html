@@ -6,8 +6,7 @@ METHOD:PUBLISH
 X-WR-TIMEZONE:UTC
 X-WR-CALNAME:{{d.feed.title_text}}
 X-WR-CALDESC:{{d.feed.description_text}}
-{% for entry in d.entries %}
-BEGIN:VEVENT
+{% for entry in d.entries %}BEGIN:VEVENT
 UID:{{entry.link}}
 DTSTAMP:{{entry.start_ical}}{% if d.feed.author_detail.email %}
 ORGANIZER:MAILTO:{{d.feed.author_detail.email}}{% endif %}
@@ -16,6 +15,5 @@ DTEND:{{entry.end_ical}}
 URL:{{entry.link}}
 SUMMARY:{{entry.title_text}}
 DESCRIPTION:{{entry.description_text}}
-END:VEVENT
-{% endfor %}
+END:VEVENT{% endfor %}
 END:VCALENDAR
