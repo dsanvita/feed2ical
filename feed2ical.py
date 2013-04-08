@@ -51,16 +51,15 @@ class Convert(webapp.RequestHandler):
 					d.feed.description_text = re.sub(r'\s+', " ", html2text.html2text(d.feed.description))
 				except:
 					pass
-				allday = True
 				for entry in d.entries:
+					entry['all_day'] = True
 					try:
 						datPubDate = datetime(*(entry.updated_parsed[0:6]))
 					except:
 						datPubDate = datetime.utcnow()
 					try:
 						if (datPubDate.hour + datPubDate.minute + datPubDate.second) > 0:
-							allday = False
-							break
+							entry['all_day'] = False
 					except:
 						pass
 				for entry in d.entries:
@@ -85,12 +84,12 @@ class Convert(webapp.RequestHandler):
 						try:
 							datEndDate = datetime(*(entry.expired_parsed[0:6]))
 						except:
-							if allday:
+							if entry['all_day']:
 								datEndDate = (datPubDate + timedelta(days=1))
 							else:
 								datEndDate = (datPubDate + timedelta(hours=1))						
 
-						if allday:
+						if entry['all_day']:
 							stfmt = "%Y%m%d"
 						else:
 							stfmt = "%Y%m%dT%H%M%SZ"

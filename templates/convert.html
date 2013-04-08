@@ -10,10 +10,10 @@ X-WR-CALDESC:{{d.feed.description_text}}
 UID:{{entry.link}}
 DTSTAMP:{{entry.start_ical}}{% if d.feed.author_detail.email %}
 ORGANIZER:MAILTO:{{d.feed.author_detail.email}}{% endif %}
-DTSTART:{{entry.start_ical}}
-DTEND:{{entry.end_ical}}
+DTSTART{% if entry.all_day %};VALUE=DATE{% endif %}:{{entry.start_ical}}
+DTEND{% if entry.all_day %};VALUE=DATE{% endif %}:{{entry.end_ical}}
 URL:{{entry.link}}
 SUMMARY:{{entry.title_text}}
 DESCRIPTION:{{entry.description_text}}
-END:VEVENT{% endfor %}
-END:VCALENDAR
+END:VEVENT
+{% endfor %}END:VCALENDAR
