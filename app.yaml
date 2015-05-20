@@ -1,4 +1,4 @@
-application: feed2ical
+application: feed2ical-hd
 version: 1
 runtime: python
 api_version: 1

@@ -87,14 +87,15 @@ class Convert(webapp.RequestHandler):
 							if entry['all_day']:
 								datEndDate = (datPubDate + timedelta(days=1))
 							else:
-								datEndDate = (datPubDate + timedelta(hours=1))						
+								datEndDate = (datPubDate + timedelta(hours=1))
 
+						entry.datetime_ical = datStartDate.strftime("%Y%m%dT%H%M%SZ");
 						if entry['all_day']:
 							stfmt = "%Y%m%d"
 						else:
 							stfmt = "%Y%m%dT%H%M%SZ"
 						entry.start_ical = datStartDate.strftime(stfmt)
-						entry.end_ical = datEndDate.strftime(stfmt)						
+						entry.end_ical = datEndDate.strftime(stfmt)
 					except:
 						pass
 				template_values = { 'd':d }
@@ -115,21 +116,21 @@ class Opml(webapp.RequestHandler):
 			mydom = minidom.parseString(opml)
 			opml_title = mydom.getElementsByTagName("title")[0].firstChild.data
 			opml_items = mydom.getElementsByTagName("outline")
-			
+
 			channels = []
 			for item in opml_items:
 				item_text = item.getAttribute("text")
 				item_htmlurl = item.getAttribute("htmlUrl")
 				item_xmlurl = item.getAttribute("xmlUrl")
 				channels.append({'text':item_text, 'htmlurl':item_htmlurl, 'xmlurl':quote_plus(item_xmlurl)})
-			
+
 			template_values = { 'opml_title':opml_title, 'channels':channels, 'host':self.request.headers.get('host', 'no host') }
 			path = os.path.join(os.path.dirname(__file__), 'templates/opml.html')
 			self.response.out.write(template.render(path, template_values))
 		except:
 			self.response.out.write("Error processing opml file.")
 
-		
+
 application = webapp.WSGIApplication([
   ('/', MainHandler),
   ('/convert', Convert),

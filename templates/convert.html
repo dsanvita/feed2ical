@@ -8,7 +8,7 @@ X-WR-CALNAME:{{d.feed.title_text}}
 X-WR-CALDESC:{{d.feed.description_text}}
 {% for entry in d.entries %}BEGIN:VEVENT
 UID:{{entry.link}}
-DTSTAMP:{{entry.start_ical}}{% if d.feed.author_detail.email %}
+DTSTAMP:{{entry.datetime_ical}}{% if d.feed.author_detail.email %}
 ORGANIZER:MAILTO:{{d.feed.author_detail.email}}{% endif %}
 DTSTART{% if entry.all_day %};VALUE=DATE{% endif %}:{{entry.start_ical}}
 DTEND{% if entry.all_day %};VALUE=DATE{% endif %}:{{entry.end_ical}}
