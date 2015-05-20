@@ -4,8 +4,8 @@ VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 X-WR-TIMEZONE:UTC
-X-WR-CALNAME:{{d.feed.title_text}}
-X-WR-CALDESC:{{d.feed.description_text}}
+X-WR-CALNAME:{{d.feed.title_text|safe}}
+X-WR-CALDESC:{{d.feed.description_text|safe}}
 {% for entry in d.entries %}BEGIN:VEVENT
 UID:{{entry.link}}
 DTSTAMP:{{entry.datetime_ical}}{% if d.feed.author_detail.email %}
@@ -13,7 +13,7 @@ ORGANIZER:MAILTO:{{d.feed.author_detail.email}}{% endif %}
 DTSTART{% if entry.all_day %};VALUE=DATE{% endif %}:{{entry.start_ical}}
 DTEND{% if entry.all_day %};VALUE=DATE{% endif %}:{{entry.end_ical}}
 URL:{{entry.link}}
-SUMMARY:{{entry.title_text}}
-DESCRIPTION:{{entry.description_text}}
+SUMMARY:{{entry.title_text|safe}}
+DESCRIPTION:{{entry.description_text|safe}}
 END:VEVENT
 {% endfor %}END:VCALENDAR
