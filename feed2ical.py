@@ -63,13 +63,19 @@ class Convert(webapp.RequestHandler):
 					except:
 						pass
 				for entry in d.entries:
-					entry.title_text = re.sub(r'\s+', " ", html2text.html2text(entry.title))
 					try:
 						entry.description_text = html2text.html2text(entry.description)
 						entry.description_text = re.sub(r'[ ]*\n+[ ]*', "\N", entry.description_text)
 						entry.description_text = re.sub(r';', "\;", entry.description_text)
 						entry.description_text = re.sub(r',', "\,", entry.description_text)
 						entry.description_text = re.sub(r'[ \t\r]+', " ", entry.description_text)
+					except:
+						pass
+					try:
+						try:
+							entry.title_text = re.sub(r'\s+', " ", html2text.html2text(entry.title))
+						except:
+							entry.title_text = (entry.description_text[:70] + '...') if len(entry.description_text) > 70 else entry.description_text
 					except:
 						pass
 					try:
